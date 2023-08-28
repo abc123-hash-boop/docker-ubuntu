@@ -8,7 +8,7 @@ This repository contains the *Dockerfile* and *associated files* for setting up 
 
 ### Dependencies
 
-* [ubuntu:19.10](https://hub.docker.com/_/ubuntu)
+* [ubuntu:20.04](https://hub.docker.com/_/ubuntu)
 
 
 ### Usage
@@ -19,7 +19,7 @@ This repository contains the *Dockerfile* and *associated files* for setting up 
 
       sudo docker run --name=ubuntu-gnome -d --rm \
         --tmpfs /run --tmpfs /run/lock --tmpfs /tmp \
-        --cap-add SYS_BOOT --cap-add SYS_ADMIN \
+        --cgroupns=host --cap-add SYS_BOOT --cap-add SYS_ADMIN \
         -v /sys/fs/cgroup:/sys/fs/cgroup \
         -p 5901:5901 -p 6901:6901 \
         darkdragon001/ubuntu-gnome-vnc

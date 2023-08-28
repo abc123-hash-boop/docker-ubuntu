@@ -3,13 +3,12 @@ FROM darkdragon001/ubuntu-gnome-vnc:latest
 
 ### Install software
 # TODO chromium-browser uses snaps: https://github.com/ConSol/docker-headless-vnc-container/issues/137
-RUN wget -qO - https://packagecloud.io/AtomEditor/atom/gpgkey | apt-key add - \
-    && sh -c 'echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" > /etc/apt/sources.list.d/atom.list'
-# TODO wait for ppas to publish version
-#RUN apt-add-repository -y ppa:ubuntuhandbook1/avidemux          # avidemux
-RUN apt-add-repository -y ppa:heyarje/makemkv-beta              # makemkv-bin makemkv-oss
-RUN wget -q -O - https://mkvtoolnix.download/gpg-pub-moritzbunkus.txt | sudo apt-key add - \
-    && apt-add-repository -y 'https://mkvtoolnix.download/ubuntu'  # mkvtoolnix mkvtoolnix-gui
+RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/packages.microsoft.gpg \
+    && sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+RUN apt-add-repository -y ppa:xtradeb/apps          # avidemux
+RUN apt-add-repository -y ppa:heyarje/makemkv-beta  # makemkv-bin makemkv-oss
+RUN wget -q -O /usr/share/keyrings/gpg-pub-moritzbunkus.gpg https://mkvtoolnix.download/gpg-pub-moritzbunkus.gpg \
+    && sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/gpg-pub-moritzbunkus.gpg] https://mkvtoolnix.download/ubuntu/ $(. /etc/os-release && echo ${VERSION_CODENAME}) main" > /etc/apt/sources.list.d/mkvtoolnix.list'  # mkvtoolnix mkvtoolnix-gui
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     openssh-server \
     default-jre \
@@ -18,11 +17,10 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     curl filezilla inetutils-ping nmap wget \
     git meld \
     terminator \
-    atom evince gimp inkscape libreoffice \
+    code evince gimp inkscape libreoffice \
     firefox \
     imagemagick libimage-exiftool-perl exiv2 jhead \
-    acidrip ffmpeg handbrake makemkv-bin makemkv-oss mediainfo mkvtoolnix mkvtoolnix-gui vcdimager vlc \
+    acidrip avidemux-qt ffmpeg handbrake makemkv-bin makemkv-oss mediainfo mkvtoolnix mkvtoolnix-gui vcdimager vlc \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 # TODO modify settings/customizations
-
