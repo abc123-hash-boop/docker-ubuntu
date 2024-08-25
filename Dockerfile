@@ -1,4 +1,4 @@
-FROM ubuntu:19.10
+FROM ubuntu:20.04
 
 ENV container=docker
 ENV DEBIAN_FRONTEND=noninteractive
@@ -27,12 +27,13 @@ STOPSIGNAL SIGRTMIN+3
 CMD [ "/sbin/init" ]
 
 # Install GNOME
-# NOTE if you want plain gnome, use: apt-get install -y --no-install-recommends gnome-session gnome-terminal and remove the modification of /etc/gdm3/custom.conf
+# NOTE if you want plain gnome, use: "apt-get install -y --no-install-recommends gnome-session gnome-terminal"
+# NOTE initial setup uninstalled as disabling via /etc/gdm3/custom.conf stopped working: https://askubuntu.com/q/1028822/206608
 RUN apt-get update \
   && apt-get install -y ubuntu-desktop fcitx-config-gtk gnome-tweak-tool gnome-usage \
+  && apt-get purge -y --autoremove gnome-initial-setup \
   && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* \
-  && sed -i 's/\[daemon\]/[daemon]\nInitialSetupEnable=false/' /etc/gdm3/custom.conf
+  && rm -rf /var/lib/apt/lists/*
 
 # Install TigerVNC server
 # TODO set VNC port in service file > exec command
