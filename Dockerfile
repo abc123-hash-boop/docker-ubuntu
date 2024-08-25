@@ -23,8 +23,6 @@ RUN apt-get update && apt-get install -y \
   rm -rf /var/lib/apt/lists/* && \
   dpkg-divert --local --rename --add /sbin/udevadm && \
   ln -s /bin/true /sbin/udevadm
-# TODO maybe disable other targets: https://developers.redhat.com/blog/2014/05/05/running-systemd-within-docker-container/
-RUN systemctl disable systemd-resolved
 VOLUME ["/sys/fs/cgroup"]
 STOPSIGNAL SIGRTMIN+3
 CMD [ "/sbin/init" ]
@@ -37,6 +35,17 @@ RUN apt-get update \
   && apt-get purge -y --autoremove gnome-initial-setup \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
+
+# Remove unnecessary system targets
+# TODO remove more targets but make sure that startup completes and login promt is displayed when "docker run -it"
+#   https://github.com/moby/moby/issues/42275#issue-853601974
+RUN rm -f \
+  /lib/systemd/system/local-fs.target.wants/* \
+  /lib/systemd/system/sockets.target.wants/*udev* \
+  /lib/systemd/system/sockets.target.wants/*initctl* \
+  /lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup* \
+  /lib/systemd/system/systemd-update-utmp* \
+  /lib/systemd/system/systemd-resolved.service
 
 # Install TigerVNC server
 # TODO set VNC port in service file > exec command
