@@ -13,6 +13,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
+# Unminimize to include man pages
+RUN yes | unminimize
+
 # Install systemd
 RUN apt-get update && apt-get install -y \
   dbus dbus-x11 systemd && \
