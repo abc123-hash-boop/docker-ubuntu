@@ -13,7 +13,10 @@ This repository contains the *Dockerfile* and *associated files* for setting up 
 ### Usage
 
 #### Container actions
+* Build:
 
+      docker build -t ubuntu-gnome .
+  
 * Start container:
 
       sudo docker run --name=ubuntu-gnome -d --rm \
