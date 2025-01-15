@@ -73,7 +73,7 @@ RUN apt-get update && apt-get install -y \
   net-tools novnc \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/*
-RUN ln -s /usr/share/novnc/vnc_lite.html /usr/share/novnc/index.html
+RUN ln -s /usr/share/novnc/vnc.html /usr/share/novnc/index.html
 # TODO specify options like ports as environment variables -> source variables in service via EnvironmentFile=/path/to/env
 COPY novnc.service /etc/systemd/system/novnc.service
 RUN systemctl enable novnc
@@ -96,7 +96,7 @@ WORKDIR "/home/${USER}"
 # Set up VNC
 RUN mkdir -p $HOME/.vnc
 COPY xstartup $HOME/.vnc/xstartup
-RUN echo "acoman" | vncpasswd -f >> $HOME/.vnc/passwd && chmod 600 $HOME/.vnc/passwd
+RUN echo "123456" | vncpasswd -f >> $HOME/.vnc/passwd && chmod 600 $HOME/.vnc/passwd
 
 # switch back to root to start systemd
 USER root
