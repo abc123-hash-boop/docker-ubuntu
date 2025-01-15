@@ -23,8 +23,7 @@ This repository contains the *Dockerfile* and *associated files* for setting up 
         --tmpfs /run --tmpfs /run/lock --tmpfs /tmp \
         --cgroupns=host --cap-add SYS_BOOT --cap-add SYS_ADMIN \
         -v /sys/fs/cgroup:/sys/fs/cgroup \
-        -p 5901:5901 -p 6901:6901 \
-        darkdragon001/ubuntu-gnome-vnc
+        -p 5901:5901 -p 6901:6901
 
 * Open (root) shell:
 
@@ -43,7 +42,7 @@ This repository contains the *Dockerfile* and *associated files* for setting up 
 * Connect to `vnc://<host>:5901` via your VNC client.
 * Connect to `http://<host>:6901` via your web browser.
 
-_**NOTE** The password is hardcoded to `acoman`._
+_**NOTE** The password is hardcoded to `123456`._
 
 #### Using the desktop
 
